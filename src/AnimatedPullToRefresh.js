@@ -5,10 +5,9 @@ import {
   Animated,
   PanResponder,
   UIManager,
-  Dimensions
+  Dimensions,
+  Text
 } from 'react-native'
-
-import Animation from 'lottie-react-native';
 
 class AnimatedPullToRefresh extends React.Component {
   constructor(props) {
@@ -62,12 +61,15 @@ class AnimatedPullToRefresh extends React.Component {
     * Custom onScroll event
     * @type {Function}
     */
-    onScroll: React.PropTypes.func
+    onScroll: React.PropTypes.func,
+
+    indicator: React.PropTypes.node,
   }
 
   static defaultProps = {
     pullHeight : 180,
-    animationBackgroundColor: 'white'
+    animationBackgroundColor: 'white',
+    indicator: (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Refreshing...</Text></View>)
   }
 
   componentWillMount() {
@@ -219,26 +221,9 @@ class AnimatedPullToRefresh extends React.Component {
         style={{flex:1, backgroundColor:this.props.animationBackgroundColor}}
         {...this._panResponder.panHandlers}
         >
-          <Animation
-            style={[animationStyle, {opacity: this.props.isRefreshing ? 0 : 1 }]}
-            source={this.props.onPullAnimationSrc}
-            progress={animateProgress}
-          />
-          <Animation
-            style={[animationStyle,{ opacity: (this.props.isRefreshing && !this.state.isRefreshAnimationStarted) ? 1 : 0 }]}
-            source={this.props.onStartRefreshAnimationSrc}
-            progress={this.state.initAnimationProgress}
-          />
-          <Animation
-            style={[animationStyle,{ opacity: this.state.isRefreshAnimationStarted && !this.state.isRefreshAnimationEnded ? 1 : 0 }]}
-            source={this.props.onRefreshAnimationSrc}
-            progress={this.state.repeatAnimationProgress}
-          />
-          <Animation
-            style={[animationStyle,{ opacity: this.state.isRefreshAnimationEnded ? 1 : 0 }]}
-            source={this.props.onEndRefreshAnimationSrc}
-            progress={this.state.finalAnimationProgress}
-          />
+          <View style={animationStyle}>
+              {this.props.indicator}
+          </View>
 
           <ScrollView ref='scrollComponentRef'
             scrollEnabled={this.state.isScrollFree}
