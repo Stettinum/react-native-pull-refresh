@@ -6,7 +6,8 @@ import {
   PanResponder,
   UIManager,
   Dimensions,
-  Text
+  Text,
+  ActivityIndicator
 } from 'react-native'
 
 class AnimatedPullToRefresh extends React.Component {
@@ -69,7 +70,7 @@ class AnimatedPullToRefresh extends React.Component {
   static defaultProps = {
     pullHeight : 180,
     animationBackgroundColor: 'white',
-    indicator: (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Refreshing...</Text></View>)
+    indicator: (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator size="large" color="#192857" /></View>)
   }
 
   componentWillMount() {
